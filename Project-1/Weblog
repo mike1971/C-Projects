@@ -1,0 +1,319 @@
+Project 1 Program Example
+// Weblog.h
+// Michael Arnold
+
+#ifndef WEBLOG
+#define WEBLOG
+
+#include <iostream>
+#include <string>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include "Visit.h"
+using namespace std;
+
+class Weblog
+{
+public:
+	Weblog(istream& in = cin, ostream& out = cout);
+	void run();
+	
+private:
+	int isStMarys(string ip);	
+	istream *in;
+	ostream *out;
+};
+ 
+#endif
+---------------------------------------------------------------------------------
+// Weblog.cpp
+// Michael Arnold
+
+
+#include "Weblog.h"
+
+Weblog::Weblog(istream &in, ostream &out)
+{
+	this->in = &in;
+	this->out = &out;
+}
+
+int Weblog::isStMarys(string ip)
+{
+	return (ip.substr(0, 8) == "140.184." ? 1 : 0);
+}
+
+void Weblog::run()
+{
+	string ip;
+	string date;
+	string junk;
+	string request;
+	map<string, Visit> visits;
+	vector<Visit> finalVisits;
+
+	*in >> ip;
+
+	int counter = 0;
+	time_t lastRequest = 0;
+	while (*in) {
+		in->ignore(80, '[');	// read up to start of date
+		*in >> date;			// example: "30/Sep/2001:07:21:52"
+		*in >> junk >> junk;
+		*in >> request;
+		
+		Visit visit = visits[ip].add(ip, date, request);
+		           if (!visit.isNew()) {
+			finalVisits.push_back(visit);
+			lastRequest = visit.getLastRequest();
+		}
+
+		counter++;
+		if (counter % 1000 == 0) {
+			cerr << counter << endl;
+			for (map<string, Visit>::iterator i = visits.begin(); 
+					i != visits.end(); i++) {
+				          if (lastRequest != 0 && i->second.getLastRequest() < 
+					lastRequest - Visit::restPeriod) {
+					finalVisits.push_back(i->second);
+					map<string, Visit>::iterator temp = i;
+					i++;
+					visits.erase(temp);
+				}
+			}
+		}
+
+		in->ignore(400, '\n');
+
+		*in >> ip;
+	}
+
+	for (map<string, Visit>::iterator i = visits.begin(); 
+		i != visits.end(); i++) {
+		finalVisits.push_back(i->second);
+	}
+
+	int maxReq = 0, maxDocReq = 0;
+	for (int i = 0; i < finalVisits.size(); i++) {
+		if (finalVisits[i].getNumRequests() > maxReq)
+			maxReq = finalVisits[i].getNumRequests();
+		
+	}
+    
+	
+	for (int i = 0; i < finalVisits.size(); i++) {
+		finalVisits[i].normRequests(maxReq);
+		
+	}
+    
+
+	sort(finalVisits.begin(), finalVisits.end());
+	
+	*out << "STMRY DAY/NIGHT T-TH/OTHER MONTH DAY REQS DOC-REQS" << endl;
+	for (int i = 0; i < finalVisits.size(); i++) {
+		*out << finalVisits[i];
+	}	
+}
+---------------------------------------------------------------------------------
+
+// Visit.h
+// Michael Arnold
+
+#ifndef VISIT
+#define VISIT
+
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+class Visit
+{
+public:
+	Visit(); 
+	bool isDoc(string request);
+	bool isNew();
+	string getIp();
+	time_t getLastRequest();
+	int getNumRequests();
+	int getNumDocRequests();
+	void normRequests(int max);
+	void normDocRequests(int max);
+	Visit add(const string& ip, const string& date, const string& request);
+	static time_t stringToTime(string date);
+	friend ostream& operator<<(ostream& out, const Visit& visit);
+	friend bool operator<(const Visit& v1, const Visit& v2);
+	const static int restPeriod = 60 * 10; // 10 mins 
+private:
+	time_t lastRequest;
+	time_t firstRequest;
+	int numRequests;
+	int numDocRequests;
+	double requestNorm;
+	double docRequestNorm;
+	string ip;
+};
+
+#endif
+---------------------------------------------------------------------------------
+
+// Visit.cpp
+// Michael Arnold
+
+#include "Visit.h"
+
+Visit::Visit()
+{
+	lastRequest = 0;
+	firstRequest = 0;
+	numRequests = 0;
+	numDocRequests = 0;
+	requestNorm = 0.0;
+	docRequestNorm = 0.0;
+	ip = "";
+}
+
+bool Visit::isNew()
+{
+	return (firstRequest == 0);
+}
+
+string Visit::getIp()
+{
+	return ip;
+}
+
+time_t Visit::getLastRequest()
+{
+	return lastRequest;
+}
+
+int Visit::getNumRequests()
+{
+	return numRequests;
+}
+
+int Visit::getNumDocRequests()
+{
+	return numDocRequests;
+}
+
+void Visit::normRequests(int max)
+{
+	requestNorm = double(numRequests)/max;
+}
+
+void Visit::normDocRequests(int max)
+{
+	docRequestNorm = double(numDocRequests)/max;
+}
+
+Visit Visit::add(const string& ip, const string& date, const string& request)
+{
+	time_t time = stringToTime(date);
+	if (this->ip == "")
+		this->ip = ip;
+	
+	if (firstRequest == 0) {
+		firstRequest = time;
+		lastRequest = time;
+		numRequests = 1;
+		numDocRequests = (isDoc(request) ? 1 : 0);
+		return *(new Visit);
+	}
+	else if (time > lastRequest + restPeriod) {
+		Visit newVisit = *this;
+		numRequests = 1;
+		numDocRequests = (isDoc(request) ? 1 : 0);
+		lastRequest = time;
+		firstRequest = time;
+		return newVisit;	
+	}
+	else {
+		lastRequest = time;
+		numRequests++;
+		if (isDoc(request))
+			numDocRequests++;
+		return *(new Visit);
+	}
+}
+
+bool Visit::isDoc(string request)
+{
+	if (request.length() < 4)
+		return false;
+    string ext = request.substr(request.length() - 4);
+	return (ext == ".doc" || ext == ".cpp" || ext == ".txt");
+}
+
+time_t Visit::stringToTime(string date)
+{
+	string months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+					"Aug", "Sep", "Oct", "Nov", "Dec"}; 
+		
+	tm time;
+
+	time.tm_isdst = 0;
+	time.tm_mday = atoi(date.substr(0, 2).c_str());
+	string month = date.substr(3, 3);
+	for (int i = 0; i < 12; i++) 		
+		if (month == months[i]) {
+			time.tm_mon = i;
+			
+			break;
+		}
+	time.tm_year = atoi(date.substr(7, 4).c_str()) - 1900;
+	time.tm_hour = atoi(date.substr(12, 2).c_str()) - 1;  
+	time.tm_min = atoi(date.substr(15, 2).c_str());
+	time.tm_sec = atoi(date.substr(18, 2).c_str());
+
+	
+
+	time_t bob = mktime(&time);
+	
+	return bob;
+}
+
+string pad(int n)
+{
+    char two[3];
+    two[2] = '\0';
+    if(n < 10) two[0] = '0';
+    else two[0] = '0'+n/10;
+    two[1] = '0'+n%10;
+    string t(two);
+    return t;
+}
+
+ostream& operator<<(ostream& out, const Visit& visit)
+{
+	
+	tm *time;
+	time = localtime(&visit.firstRequest);
+    out << visit.ip << "\t";
+    out << pad(time->tm_mday) << "-" << pad(time->tm_mon+1) << "-" << 1900+time->tm_year << "\t" ;
+    out << pad(time->tm_hour) << ":" << pad(time->tm_min) << "\t" ;
+    out << "\t" << visit.numRequests << "\t" << endl;	
+	return out;
+}
+
+bool operator<(const Visit& v1, const Visit& v2)
+{
+	return (v1.firstRequest < v2.firstRequest);
+}
+---------------------------------------------------------------------------------
+
+#include "Weblog.h"
+
+#include <iostream>
+#include <fstream>
+
+int main() 
+{
+	Weblog bobby(cin, cout);
+	bobby.run();
+    return 0;
+}
+
