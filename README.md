@@ -1,5 +1,7 @@
 # C-Projects
+Program Projects Taken From C++ Books and Lab Exercises:
 
+-------------------------------------------------------
 Top C++ Courses plus Tutorials &
 Other Project Source Code Sites:
 
