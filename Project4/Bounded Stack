@@ -1,0 +1,317 @@
+Bounded Stack Example Code:
+
+/*
+* File:   main.cpp
+* Author: MICHAEL
+*
+* Created on April 22, 2015, 12:22 PM
+*/
+/*  Give two different implementations for the BoundedStack interface that inherit
+*  from the BoundedStack class, as described below.
+
+BoundedStackA
+
+Keeps an underlying array,
+*   as with the vector class and use push and pop at the back as you go. In the
+*  case when pushing onto a "full" stack, a loop is used to shift all items down
+* one location in the array. In doing this, you lose the bottommost item
+* while opening up the topmost location for the newly pushed object.
+* size type is used to make sure index is not negative.
+
+BoundedStackB
+
+Uses an array viewed in a
+* circular manner. the top is marked as "first" of the circular, and bottom
+* marked as "last". size type is used to make sure index is not negative.
+* it uses the capacity of the array divided by modulus 2 to obtain the next
+* index point; the same idea works for pop'ing.
+
+
+*/
+
+
+#include <cstdlib>
+#include "VectorStak.h" //not actually a vector(it would be hassle to rename)
+#include "BoundedStackB.h"
+#include <iostream>
+#include <string>
+using namespace std;
+
+/*
+*
+*/
+int main(int argc, char** argv, int choice) {
+	
+	std::string log = "weblog.txt";
+	VectorStak<std::string> StackA(log); //give stack file to open
+	BoundedStackB<std::string> StackB(log);//give stack file to open
+	while (1){
+		cout << "\n----------------------------------------------------------------------------" << endl;
+		cout << "BoundedStackA, Choice 1" << "\n";
+		cout << "\n";
+		cout << "Keeps an underlying array," << "\n";
+		cout << "* as with the vector class and use push and pop at the back as you go.In the"<<"\n";
+		cout << "* case when pushing onto a full stack, a loop is used to shift all items down" << "\n";
+		cout << "* one location in the array.In doing this, you lose the bottommost item" << "\n";
+		cout << "* while opening up the topmost location for the newly pushed object." << "\n";
+		cout << "* size type is used to make sure index is not negative." << "\n";
+		cout << "\n";
+		cout << "\n----------------------------------------------------------------------------" << endl;
+		cout << "BoundedStackB, Choice2" << "\n";
+		cout << "\n";
+		cout << "Uses an array viewed in a" << "\n";
+		cout << "* circular manner.the top is marked as first of the circular, and bottom" << "\n";
+		cout << "* marked as last.size type is used to make sure index is not negative." << "\n";
+		cout << "* it uses the capacity of the array divided by modulus 2 to obtain the next" << "\n";
+		cout << "* index point; the same idea works for pop'ing." << "\n";
+		cout << "\n----------------------------------------------------------------------------" << endl;
+
+		cout << "1.Choose StackA Methode" << endl;
+		cout << "2.Choose StackB Methode" << endl;
+		cout << "3.Quit" << endl;
+		cout << "Enter your Choice: ";
+		cin >> choice;
+		cout << "\n----------------------------------------------------------------------------" << endl;
+		
+		switch (choice)
+
+		{
+		case 1:
+
+			
+			
+			StackA.getlog();     //put file data into stack
+			std::cout << "using StackA method: " << std::endl;
+			StackA.PrintStak();  //print entire stack
+
+			break;
+		case 2:
+			
+			
+			StackB.getlog();
+			std::cout << "using StackB method: " << std::endl;
+			StackB.PrintStak();
+			break;
+		case 3:
+			exit(1);
+			break;
+		default:
+			cout << "Wrong Choice" << endl;
+
+		}
+	}
+	system("pause");
+}
+
+----------------------------------------------------------------------------------------------------------------------
+
+/* 
+ * File:   VectorStak.h
+ * Author: MICHAEL
+ *
+ * Created on April 22, 2015, 3:00 PM
+ */
+
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <cassert>
+#include <cstdlib>
+using namespace std;
+template<class Item>
+
+class VectorStak
+{
+public:
+	Item size();       //returns size of stack
+	bool isEmpty();     //returns t/f if stack is empty
+	void push(const Item& e);   //put e in the stack
+	void pop();         //delete oldest item off the stack
+	Item peek(); //returns top of stack
+	VectorStak();       //constructor
+	VectorStak(std::string& log);       //constructor takes in a file name
+	void getlog();      //takes data in specified file name and adds them to stack
+	void PrintStak();   //prints the entire stack
+private:
+	Item elems[50];
+	std::size_t numUsed;
+	Item Line;
+	std::string Weblog;
+
+};
+template <class Item>
+VectorStak<Item>::VectorStak() {        //constructor
+	numUsed = 0;
+}
+template <class Item>
+VectorStak<Item>::VectorStak(std::string& log) {        //constructor takes in a file name
+	numUsed = 0;
+	Weblog = log;
+}
+
+
+template <class Item>
+bool VectorStak<Item>::isEmpty(){       //returns whether stack is empty
+	if (numUsed == 0){ return true; }
+	else{ return false; }
+}
+template <class Item>
+void VectorStak<Item>::push(const Item& e){     //adds an item to the stack
+	if (numUsed != 50){
+		elems[numUsed] = e;
+		numUsed++;
+	}
+	else if (numUsed == 50){
+		VectorStak::pop();
+		elems[numUsed] = e;
+	}
+}
+template <class Item>
+void VectorStak<Item>::pop(){   //deletes the oldest item off the stack
+	for (int i = 0; i < (numUsed - 1); i++){
+		elems[i] = elems[i + 1];
+	}
+	numUsed--;
+}
+template <class Item>
+Item VectorStak<Item>::peek(){  //return the top of the stack
+	return elems[numUsed];
+}
+template <class Item>
+Item VectorStak<Item>::size(){  //return size of stack
+	return numUsed;
+}
+template <class Item>
+void VectorStak<Item>::getlog() {
+	//This function will and add every line
+	//  of a specified file to an array
+	std::ifstream getStuff;
+	Line = "null";
+	getStuff.open(Weblog.c_str());
+	assert(getStuff);
+
+
+	while (getline(getStuff, Line)) {
+		push(Line);
+		// std::cout << log.GetArrayLine(i) << std::endl;
+	}
+	getStuff.close();
+	getStuff.clear();
+}
+template <class Item>
+void VectorStak<Item>::PrintStak(){     //outputs the entire stack
+	std::cout << "Contents of Stack: " << std::endl;
+	for (int i = 0; i < 50; i++){
+		std::cout << std::endl << elems[i] << std::endl;
+	}
+	
+}
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+ * File:   BoundedStakB.h
+ * Author: MICHAEL
+ *
+ * Created on April 22, 2015, 3:04 PM
+ */
+
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <cassert>
+#include <cstdlib>
+using namespace std;
+template <class Item>
+
+class BoundedStackB
+{
+public:
+	Item size();       //returns size of stack
+	bool isEmpty();     //returns t/f if stack is empty
+	void push(const Item& e);   //put e in the stack
+	void pop();         //delete oldest item off the stack
+	Item peek(); //returns top of stack
+	BoundedStackB();       //constructor
+	BoundedStackB(std::string& log);       //constructor takes in a file name
+	void getlog();      //takes data in specified file name and adds them to stack
+	void PrintStak();   //prints the entire stack
+private:
+	Item elems[50];
+	std::size_t numUsed;
+	Item Line;
+	std::string Weblog;
+	std::size_t first, last;
+	std::size_t nextIndex(std::size_t i) const{ return (i + 1) % 50; }
+
+};
+template <class Item>
+BoundedStackB<Item>::BoundedStackB() {        //constructor
+	numUsed = 0;
+	last = 0;
+	first = 0;
+}
+template <class Item>
+BoundedStackB<Item>::BoundedStackB(std::string& log) {        //constructor takes in a file name
+	numUsed = 0;
+	Weblog = log;
+	last = 0;
+	first = 0;
+}
+
+
+template <class Item>
+bool BoundedStackB<Item>::isEmpty(){       //returns whether stack is empty
+	if (numUsed == 0){ return true; }
+	else{ return false; }
+}
+template <class Item>
+void BoundedStackB<Item>::push(const Item& e){     //adds an item to the stack
+	last = nextIndex(last);
+	elems[last] = e;
+	numUsed++;
+}
+template <class Item>
+void BoundedStackB<Item>::pop(){   //deletes the oldest item off the stack
+	first = nextIndex(first);
+	numUsed--;
+}
+template <class Item>
+Item BoundedStackB<Item>::peek(){  //return the top of the stack
+	return elems[numUsed];
+}
+template <class Item>
+Item BoundedStackB<Item>::size(){  //return size of stack
+	return numUsed;
+}
+template <class Item>
+void BoundedStackB<Item>::getlog() {
+	//This function will and add every line
+	//  of a specified file to an array
+	std::ifstream getStuff;
+	Line = "null";
+	getStuff.open(Weblog.c_str());
+	assert(getStuff);
+
+
+	while (getline(getStuff, Line)) {
+		push(Line);
+		// std::cout << log.GetArrayLine(i) << std::endl;
+	}
+	getStuff.close();
+	getStuff.clear();
+}
+template <class Item>
+void BoundedStackB<Item>::PrintStak(){     //outputs the entire stack
+	std::cout << "Contents of Stack: " << std::endl;
+	for (int i = 0; i < 50; i++){
+		std::cout << std::endl << elems[i] << std::endl;
+	}
+	/* for(int i= numUsed-1; i >= 0 ; i--){
+	std::cout << std::endl << elems[i] << std::endl;
+	}*/
+}
+
+
+
+
