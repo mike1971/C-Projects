@@ -1,5 +1,5 @@
 # C-Projects 500 Types
-Program Projects Taken From C++ Books and Lab Exercises:
+Program Projects Taken From C++ Books, and Lab Exercises. Use the required book in conjuction to the project:
 
 -------------------------------------------------------
 Top C++ Courses plus Tutorials &
