@@ -1,4 +1,4 @@
-# C-Projects 100 Types
+# C-Projects 500 Types
 Program Projects Taken From C++ Books and Lab Exercises:
 
 -------------------------------------------------------
