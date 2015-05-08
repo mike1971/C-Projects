@@ -1,9 +1,9 @@
 # C-Projects 500 Types
 Program Projects Taken From C++ Books, and Lab Exercises. Use the required book in conjuction to the project:
 
-Index of C++ Programming Principles and Practices;
+Index of C++ Programming Principles and Practices
 -------------------------------------------------
-Chapter 1 Computers, People, and Programming page 17;
+Chapter 1 Computers, People, and Programming page 17:
 1.1 Introduction page 18;
 1.2 Software page 19;
 1.3 People page 21
