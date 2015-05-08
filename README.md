@@ -2,6 +2,7 @@
 Program Projects Taken From C++ Books, and Lab Exercises. Use the required book in conjuction to the project:
 
 Index of C++ Programming Principles and Practices
+-------------------------------------------------
 Chapter 1 Computers, People, and Programming 17
 1.1 Introduction 18
 1.2 Software 19
@@ -192,8 +193,9 @@ Chapter 10 Input and Output Streams 339
 10.1 1.1 In ·memory n:presentation 362
 10. 11 .2 Reading sU"Uctured values 364
 10.11.3 Changing n:presentations 368
---------------------------------------------------------------
-C++ For Dummies Version 7 Projects 
+
+C++ For Dummies Version 7 Projects
+---------------------------------------
 Contents at a Glance
 Introduction................................................................. 1
 Part I: Getting Started with C++ Programming................................. 7
@@ -235,7 +237,7 @@ Chapter 30: Ten Ways to Protect Your Programs from Hackers....................41
 
 Top C++ Courses plus Tutorials &
 Other Project Source Code Sites:
-
+--------------------------------------
 http://www.cprogramming.com/cgi-bin/source/source.cgi
 
 http://www.cprogramming.com/tutorial/c++-tutorial.html
