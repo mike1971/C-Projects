@@ -232,7 +232,7 @@ Chapter 28: Writing Hacker-Proof Code.........................................38
 Part VI: The Part of Tens.....................................................407
 Chapter 29: Ten Ways to Avoid Adding Bugs to Your Program.....................409
 Chapter 30: Ten Ways to Protect Your Programs from Hackers....................417
--------------------------------------------------------
+
 Top C++ Courses plus Tutorials &
 Other Project Source Code Sites:
 
