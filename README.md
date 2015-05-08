@@ -3,31 +3,31 @@ Program Projects Taken From C++ Books, and Lab Exercises. Use the required book 
 
 Index of C++ Programming Principles and Practices
 -------------------------------------------------
-Chapter 1 Computers, People, and Programming 17
-1.1 Introduction 18
-1.2 Software 19
-1.3 People 21
-1.4 Computer science 24
-1.5 Computers are evel)"vhere 25
-1.5.1 Screens and no screens 26
-1.5.2 Shipping 26
-1.5.3 l 'i::lecommunications 28
-1.5.4 Medicine 30
-1.5.5 lnfonnation 31
-1.5.6 A "crtical view 32
-1.5.7 So what? 34
-1.6 Ideals for programmers 34
+Chapter 1 Computers, People, and Programming page 17
+1.1 Introduction page 18
+1.2 Software page 19
+1.3 People page 21
+1.4 Computer science page 24
+1.5 Computers are evel)"vhere page 25
+1.5.1 Screens and no screens page 26
+1.5.2 Shipping page 26
+1.5.3 l 'i::lecommunications page 28
+1.5.4 Medicine page 30
+1.5.5 lnfonnation page 31
+1.5.6 A "crtical view page 32
+1.5.7 So what? page 34
+1.6 Ideals for programmers page 34
 
-Part I The Basics 41
-Chapler 2 He llo. World! 43
-2.1 Pl.'Ograms 44
-2.2 The classic first program 45
-2.3 Compilation 47
-2.4 Linking 51
-2.5 Programming environments 52
+Part I The Basics page 41
+Chapler 2 He llo. World! page 43
+2.1 Pl.'Ograms page 44
+2.2 The classic first program page 45
+2.3 Compilation page 47
+2.4 Linking page 51
+2.5 Programming environments page 52
 
-Chapter 3 Objects. Types, and Val ues 59
-3.1 Input 60
+Chapter 3 Objects. Types, and Val ues page 59
+3.1 Input page 60
 3.2 Variables 62
 3.3 Input and type 64-
 3.4 Operations and operators 66
