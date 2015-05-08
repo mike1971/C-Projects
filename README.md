@@ -1,6 +1,15 @@
 # C-Projects 500 Types
 Program Projects Taken From C++ Books, and Lab Exercises. Use the required book in conjuction to the project:
 
+C++ Programming Principles Book Link
+http://sdrv.ms/Z0qZcs
+
+C++ Programming for Dummies
+http://1drv.ms/11FPxPA
+
+c++ Object Coding
+http://1drv.ms/1bvZcvV
+
 Index of C++ Programming Principles and Practices
 -------------------------------------------------
 Chapter 1 Computers, People, and Programming page 17:
